@@ -31,10 +31,10 @@ We used the Kaggle API in Google Colab to download and unzip the dataset.
 Visuals for understanding data distribution and correlations.
 
 **Target Distribution**:
-![Target Distribution](./images/download\ (82).png)
+![Target Distribution](download_82.png)
 
 **Correlation Heatmap**:
-![Correlation Heatmap](./images/download\ (83).png)
+![Correlation Heatmap](download_83.png)
 
 ### 3. 🧠 Feature Engineering
 Created several derived features to capture more meaningful relationships:
@@ -77,19 +77,22 @@ We trained and validated the following:
 ### 6. 📈 Evaluation Metrics
 
 **Predicted vs Actual Plot**:
-![Predicted vs Actual](./images/download\ (85).png)
+![Predicted vs Actual](download_85.png)
 
 **Residual Histogram**:
-![Residual Histogram](./images/download\ (86).png)
+![Residual Histogram](download_86.png)
 
 **Residual vs Predicted**:
-![Residuals vs Predicted](./images/download\ (87).png)
+![Residuals vs Predicted](download_87.png)
 
 ### 7. 🔍 SHAP Explainability
 We used SHAP values to understand model behavior.
 
 **SHAP Beeswarm Plot**:
-![SHAP Summary Plot](./images/download\ (88).png)
+![SHAP Summary Plot](download_88.png)
+
+**Top 15 Feature Importances**:
+![Feature Importance](download_84.png)
 
 ---
 
