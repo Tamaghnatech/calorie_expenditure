@@ -1,60 +1,67 @@
 # Predicting Calorie Expenditure - Kaggle Playground Series S5E5
 
-Welcome to Lord Nag's end-to-end pipeline for the Kaggle Playground Series S5E5: **Predict Calorie Expenditure**. This project leverages structured tabular data to build robust machine learning models that predict calories burned during physical activities.
+Welcome to **Lord Nag's** end-to-end machine learning pipeline for the Kaggle Playground Series S5E5: **Predict Calorie Expenditure**. This repository presents a complete solution for beginners and intermediate practitioners using Python and LightGBM in Google Colab.
 
 ---
 
-## 🔍 Problem Statement
-Your objective is to predict how many calories are burned during a workout session using a dataset derived from a deep learning model trained on real-world exercise data.
+## 📌 Problem Statement
+The task is to predict the number of **calories burned** during a workout based on biometric and exercise-related features. This uses a synthetic dataset modeled on real-world biometric exercise data.
 
 ---
 
 ## 📁 Dataset Overview
-The dataset is provided by Kaggle and includes:
-- `train.csv`: Training features + target (`Calories`)
-- `test.csv`: Test features (no `Calories`)
-- `sample_submission.csv`: Sample format for submissions
+The dataset contains the following files:
+- `train.csv`: Training dataset with features and target (`Calories`)
+- `test.csv`: Test dataset with only features
+- `sample_submission.csv`: Template for final submission format
 
-Key features include:
-- Age, Gender (Sex_male), Height, Weight
-- Duration of activity
-- Heart Rate, Body Temperature
-
-Additional features were engineered as detailed below.
+Key columns:
+- **Age, Height, Weight**: basic biometric info
+- **Duration, Heart_Rate, Body_Temp**: workout session metrics
+- **Sex_male**: encoded gender
 
 ---
 
-## 🧪 Pipeline Steps
+## 🚀 Project Pipeline
 
-### 1. 📦 **Kaggle Setup**
-Downloaded dataset via Kaggle API inside Google Colab.
+### 1. ⚙️ Kaggle API & Data Setup
+We used the Kaggle API in Google Colab to download and unzip the dataset.
 
-### 2. 📊 **EDA (Exploratory Data Analysis)**
-- Distribution plots for `Calories`
-- Heatmap of feature correlations
-- Inspection for skewness, outliers, and missing values
+### 2. 📊 Exploratory Data Analysis (EDA)
+Visuals for understanding data distribution and correlations.
 
-### 3. 🧠 **Feature Engineering**
-New features created for deeper signal extraction:
-- **BMI** = Weight / (Height/100)^2
-- **HR_per_min** = Heart_Rate / Duration
-- **Temp_per_min** = Body_Temp / Duration
-- **HRxTemp** = Heart_Rate * Body_Temp
-- **Duration_Weight** = Duration * Weight
+**Target Distribution**:
+![Target Distribution](./images/download\ (82).png)
 
-### 4. ⚙️ **Preprocessing**
-- Handled missing/infinite values
-- One-hot encoded gender column
-- StandardScaler applied for normalization
-- Split into training/validation using 80/20 strategy
+**Correlation Heatmap**:
+![Correlation Heatmap](./images/download\ (83).png)
 
-### 5. 🌲 **Random Forest Regressor**
-- Baseline model
-- RMSLE ≈ 0.01808
+### 3. 🧠 Feature Engineering
+Created several derived features to capture more meaningful relationships:
+- `BMI = Weight / (Height/100)^2`
+- `HR_per_min = Heart_Rate / Duration`
+- `Temp_per_min = Body_Temp / Duration`
+- `HRxTemp = Heart_Rate * Body_Temp`
+- `Duration_Weight = Duration * Weight`
 
-### 6. 🌳 **LightGBM Regressor** (Baseline & Tuned)
-- Tuned with RandomizedSearchCV
-- Best params:
+### 4. 🧼 Preprocessing
+- One-hot encoded gender
+- Standard scaling applied
+- NaNs handled with median fill
+- Log1p transformation applied to target for RMSLE stability
+
+### 5. 🌲 Model Training
+We trained and validated the following:
+
+#### ✅ Random Forest
+- RMSLE: ~0.01808
+
+#### ✅ LightGBM (Baseline)
+- RMSLE: ~0.01728
+
+#### ✅ LightGBM (Tuned with RandomizedSearchCV)
+- RMSLE Public Score: **0.05892**
+- Best parameters:
 ```json
 {
   "subsample": 1.0,
@@ -66,55 +73,54 @@ New features created for deeper signal extraction:
   "colsample_bytree": 0.6
 }
 ```
-- Final Public Leaderboard Score: **0.05892** (Top-tier performance)
+
+### 6. 📈 Evaluation Metrics
+
+**Predicted vs Actual Plot**:
+![Predicted vs Actual](./images/download\ (85).png)
+
+**Residual Histogram**:
+![Residual Histogram](./images/download\ (86).png)
+
+**Residual vs Predicted**:
+![Residuals vs Predicted](./images/download\ (87).png)
+
+### 7. 🔍 SHAP Explainability
+We used SHAP values to understand model behavior.
+
+**SHAP Beeswarm Plot**:
+![SHAP Summary Plot](./images/download\ (88).png)
 
 ---
 
-## 📈 Model Evaluation
-
-### 🔁 **Predicted vs Actual**
-- Strong linearity around y=x
-- Accurate on entire value spectrum
-
-### 📉 **Residuals Analysis**
-- Residuals centered at 0
-- Low variance across prediction bands
-
-### 🔍 **SHAP Interpretability**
-- TreeExplainer used
-- Key drivers:
-  - `Duration`, `Heart_Rate`, `Temp_per_min`, `Age`
-- Beeswarm plots and bar plots used for feature attributions
+## 📤 Submission
+- Inference done on log1p-transformed predictions using `np.expm1()`
+- Final CSV created as: `submission_tuned_lgb.csv`
 
 ---
 
-## 💾 Submission
-- Predictions were log-transformed during training
-- Inference used `np.expm1()` to return to real-world values
-- Submission saved as `submission_tuned_lgb.csv`
-
----
-
-## 💡 Future Enhancements
-- Optuna for smarter hyperparameter search
-- Blend ensemble with Random Forest
-- Deploy notebook as a public kernel for reproducibility
-- Implement cross-fold SHAP aggregation
+## 💡 Key Takeaways for Beginners
+- 🔄 Always scale and encode your data properly
+- 🧱 Feature engineering often improves model performance
+- 🧪 Evaluate with proper plots — residuals, prediction trends
+- 🔍 Use SHAP for model explainability
+- ✅ Use log1p if your target is skewed
 
 ---
 
 ## 📜 Author
-**Tamaghna Nag (Lord Nag)**  
-Machine Learning Engineer & Kaggle Warrior  
+**Tamaghna Nag (aka Lord Nag)**  
+ML Engineer | AI Strategist | Kaggle Enthusiast  
 🔗 GitHub: [github.com/tamaghna-nag](https://github.com/tamaghna-nag)
 
 ---
 
-## 🔗 Links
-- [Competition Page](https://www.kaggle.com/competitions/playground-series-s5e5)
-- [LightGBM Documentation](https://lightgbm.readthedocs.io)
-- [SHAP Docs](https://shap.readthedocs.io/en/latest/index.html)
+## 📚 References
+- [Kaggle Competition](https://www.kaggle.com/competitions/playground-series-s5e5)
+- [LightGBM Docs](https://lightgbm.readthedocs.io)
+- [SHAP Library](https://shap.readthedocs.io)
 
 ---
 
-May your models be fast, your residuals be small, and your leaderboard rank ever climb. 🧠⚔️
+## 🤝 Contributions
+Feel free to fork the repo, raise issues, or suggest new feature engineering ideas or model improvements!
